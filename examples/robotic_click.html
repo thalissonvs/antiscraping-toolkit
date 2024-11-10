@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botão com Detecção Anti-Robô</title>
+    <style>
+        /* Estilos básicos para centralizar o botão */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        /* Estilo do botão */
+        #botao {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: white;
+            background-color: #3498db;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #botao:hover {
+            background-color: #2980b9;
+        }
+
+        /* Mensagem de erro */
+        #mensagem-erro {
+            display: none;
+            margin-top: 20px;
+            color: red;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button id="botao">Clique aqui</button>
+        <p id="mensagem-erro">Erro: Detecção de comportamento robótico! Passe o mouse sobre o botão antes de clicar.</p>
+    </div>
+
+    <script>
+        const botao = document.getElementById("botao");
+        const mensagemErro = document.getElementById("mensagem-erro");
+        
+        let hoverDetectado = false;
+
+        // Evento de hover
+        botao.addEventListener("mouseenter", () => {
+            hoverDetectado = true;  // Marca que o hover foi detectado
+        });
+
+        // Evento de clique
+        botao.addEventListener("click", () => {
+            if (hoverDetectado) {
+                alert("Botão clicado com sucesso!");
+                hoverDetectado = false;  // Reseta o estado para o próximo clique
+                mensagemErro.style.display = "none";  // Oculta a mensagem de erro se ela estava visível
+            } else {
+                mensagemErro.style.display = "block";  // Exibe a mensagem de erro
+            }
+        });
+    </script>
+</body>
+</html>

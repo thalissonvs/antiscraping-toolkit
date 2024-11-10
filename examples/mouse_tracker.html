@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detecção de Bots</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #results {
+            margin-top: 20px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detecção de Bots</h1>
+        <p>Mova o mouse pela página e clique no botão para coletar dados.</p>
+        <button id="checkButton">Clique aqui</button>
+        <div id="results">
+            <h2>Resultados</h2>
+            <p>Detecção de Bot: <span id="botDetection">Não detectado</span></p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const botDetectionElement = document.getElementById('botDetection');
+            const checkButton = document.getElementById('checkButton');
+
+            let mouseMovements = 0;
+            let lastMovementTime = Date.now();
+            let totalTime = 0;
+
+            document.addEventListener('mousemove', (event) => {
+                const currentTime = Date.now();
+                const timeSinceLastMovement = currentTime - lastMovementTime;
+                totalTime += timeSinceLastMovement;
+                lastMovementTime = currentTime;
+
+                mouseMovements++;
+                const averageTime = totalTime / mouseMovements;
+
+            });
+
+            checkButton.addEventListener('click', () => {
+                const averageTime = totalTime / mouseMovements;
+
+                if (mouseMovements === 0 || averageTime < 8) {
+                    botDetectionElement.textContent = 'Detectado';
+                    botDetectionElement.style.color = 'red';
+                } else {
+                    botDetectionElement.textContent = 'Não detectado';
+                    botDetectionElement.style.color = 'green';
+                }
+
+                // Zera os dados após o clique
+                mouseMovements = 0;
+                lastMovementTime = Date.now();
+                totalTime = 0;
+            });
+        });
+    </script>
+</body>
+</html>

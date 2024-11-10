@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fingerprint do Usuário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        h1 {
+            color: #333;
+        }
+        #fingerprint {
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 10px;
+        }
+        #loading {
+            font-size: 18px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fingerprint do Usuário</h1>
+        <p id="loading">Obtendo a fingerprint...</p>
+        <p id="fingerprint"></p>
+    </div>
+
+    <script>
+        // Initialize the agent at application startup.
+        const fpPromise = import('https://openfpcdn.io/fingerprintjs/v4')
+            .then(FingerprintJS => FingerprintJS.load());
+
+        // Get the visitor identifier when you need it.
+        fpPromise
+            .then(fp => fp.get())
+            .then(result => {
+                // This is the visitor identifier:
+                const visitorId = result.visitorId;
+                document.getElementById('loading').style.display = 'none'; // Esconde a mensagem de carregamento
+                document.getElementById('fingerprint').innerText = visitorId; // Mostra a fingerprint
+            })
+            .catch(err => {
+                console.error('Erro ao obter a fingerprint:', err);
+                document.getElementById('loading').innerText = 'Erro ao obter a fingerprint.';
+            });
+    </script>
+</body>
+</html>
